@@ -15,16 +15,17 @@ import java.util.Map;
 public class CommenController {
 public  final static   String PREFIXURL = "https://dev5open.chaindown.com/fe-platform-api";
 
-    @RequestMapping("dddd.html")
+    @RequestMapping("post.html")
     public  String dddd(){
-        return  "html/dddd";
+        return  "html/post";
     }
 
 
     @RequestMapping("commenPost")
     @ResponseBody
     public  String commenPost ( @RequestBody Map<String,Object> map)throws  UnsupportedEncodingException{
-        String url = (String)map.get("url");
+        String urll = (String)map.get("url");
+        String url = urll.trim();
         String securt = "aa123456";
         String sign = MD5Util.generateSign(map,securt);
         map.put("sign",sign);
