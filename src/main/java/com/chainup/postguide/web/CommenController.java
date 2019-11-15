@@ -1,5 +1,6 @@
 package com.chainup.postguide.web;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.chainup.postguide.util.MD5Util;
 import jodd.http.HttpRequest;
@@ -29,8 +30,12 @@ public  final static   String PREFIXURL = "https://dev5open.chaindown.com/fe-pla
         String securt = "aa123456";
         String sign = MD5Util.generateSign(map,securt);
         map.put("sign",sign);
-        HttpResponse response = HttpRequest.post(PREFIXURL+url).form(map).charset("utf-8")
-                .contentType("application/x-www-form-urlencoded").connectionTimeout(2000)
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.putAll(map);
+        HttpResponse response = HttpRequest.post(PREFIXURL+url).body(jsonObject.toString()).charset("utf-8")
+               //.contentType("application/x-www-form-urlencoded").connectionTimeout(2000)
+                .contentType("application/json").connectionTimeout(2000)
                 .timeout(5000).send();
             String result = new String(response.bodyBytes(), "utf-8");
             return result;
