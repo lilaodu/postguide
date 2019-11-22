@@ -2,23 +2,65 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>CHAINUP PostGuid</title>
+    <title>Demo of ACE Editor</title>
     <!--导入js库-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" type="text/css" href="http://cdn.clouddeep.cn/amazeui/1.0.1/css/amazeui.basic.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/json-formatter/0.7.0/json-formatter.css">
-
     <script
             src="https://code.jquery.com/jquery-1.12.4.js"
             integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
             crossorigin="anonymous"></script>
     <style>
-        #code{
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        @media (-webkit-max-device-pixel-ratio: 1) {
+            ::-webkit-scrollbar-track-piece {
+                background-color:#fff
+            }
+
+            ::-webkit-scrollbar {
+                width: 6px;
+                height: 6px
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background-color: #c2c2c2;
+                background-clip: padding-box;
+                min-height: 28px
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background-color: #a0a0a0
+            }
+        }
+        html, body {
+            /* overflow: hidden; */
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+        }
+        .nav, .main {
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            overflow: scroll;
+        }
+        .nav {
+            width: 360px;
+        }
+        .main {
+            width: 100%;
+        }
+        #code {
             width:600px;
             height:300px;
         }
-        #codeResponce{
+        #codeResponce {
             width:600px;
             height:300px;
         }
@@ -26,44 +68,55 @@
 </head>
 
 <body>
-<div align="center">
-<div class="am-form-group">
-    <label for="requestUrl">请求地址</label>
-    <input class="am-form-field" style="width: 500px" type="text" id="requestUrl" placeholder="输入请求地址">
-</div>
+<div class="container">
+    <div class="nav">
+        <ol>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ol>
+    </div>
+    <div class="main">
+        <div align="center">
+            <div class="am-form-group">
+                <label for="requestUrl">请求地址</label>
+                <input class="am-form-field" style="width: 500px" type="text" id="requestUrl" placeholder="输入请求地址">
+            </div>
 
-<!--代码输入框（注意请务必设置高度，否则无法显示）-->
-<br>
+            <!--代码输入框（注意请务必设置高度，否则无法显示）-->
+            <br>
 
 
-<label for="code">Body</label>
-<pre id="code" class="ace_editor" >
-    <textarea class="ace_text-input">
+            <label for="code">Body</label>
+            <pre id="code" class="ace_editor" >
+                <textarea class="ace_text-input">
 
-    </textarea></pre>
+                </textarea></pre>
 
-<button type="button"   class="am-btn am-btn-primary am-square" id="sendData">发送请求</button>
+            <button type="button"   class="am-btn am-btn-primary am-square" id="sendData">发送请求</button>
 
-<br>
-<br>
-<label for="codeResponce">Response</label>
-<pre id="codeResponce" class="ace_editor" >
-    <textarea class="ace_text-input">
+            <br>
+            <br>
+            <label for="codeResponce">Response</label>
+            <pre id="codeResponce" class="ace_editor" >
+                <textarea class="ace_text-input">
 
-    </textarea></pre>
+                </textarea></pre>
 
+        </div>
+    </div>
 </div>
 <script>
     //初始化对象
-   editor = ace.edit("code");
+    editor = ace.edit("code");
 
     //设置风格和语言（更多风格和语言，请到github上相应目录查看）
-   theme = "clouds"
-   language = "c_cpp"
-   editor.setTheme("ace/theme/" + theme);
+    theme = "clouds"
+    language = "c_cpp"
+    editor.setTheme("ace/theme/" + theme);
     editor.getSession().setMode("ace/mode/json");
     //字体大小
-   editor.setFontSize(18);
+    editor.setFontSize(18);
 
     //设置只读（true时只读，用于展示代码）
     editor.setReadOnly(false);
@@ -95,28 +148,28 @@
 
 <script>
 
-$("#sendData").click(function () {
-    var getDa = editor.getValue();
-    var jsons = $.parseJSON(getDa);
-    var requestUrl =  $("#requestUrl").val();
-    jsons.url=requestUrl;
-    console.log(jsons);
+    $("#sendData").click(function () {
+        var getDa = editor.getValue();
+        var jsons = $.parseJSON(getDa);
+        var requestUrl =  $("#requestUrl").val();
+        jsons.url=requestUrl;
+        console.log(jsons);
 
-    $.ajax({
-        url: "/commenPost",
-        data: JSON.stringify(jsons),
-        type: "POST",
-        contentType: 'application/json',
-        dataType: "text",
-        success: function(data) {
-            // data = jQuery.parseJSON(data);  //dataType指明了返回数据为json类型，故不需要再反序列化
-            editorResponce.getSession().setUseWrapMode(true);
-            var jsonFormat = formatJson(data);
-            editorResponce.setValue(jsonFormat);
+        $.ajax({
+            url: "/commenPost",
+            data: JSON.stringify(jsons),
+            type: "POST",
+            contentType: 'application/json',
+            dataType: "text",
+            success: function(data) {
+                // data = jQuery.parseJSON(data);  //dataType指明了返回数据为json类型，故不需要再反序列化
+                editorResponce.getSession().setUseWrapMode(true);
+                var jsonFormat = formatJson(data);
+                editorResponce.setValue(jsonFormat);
 
-        }
-    });
-})
+            }
+        });
+    })
 </script>
 
 <script>
