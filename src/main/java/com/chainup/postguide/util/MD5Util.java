@@ -3,9 +3,7 @@ package com.chainup.postguide.util;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class MD5Util {
 	/**
@@ -71,7 +69,17 @@ public class MD5Util {
 
     }
 	public static void main(String[] args) {
-		System.out.println(MD5Util.getMD5("123456789aaa"));
 
-	}
+
+        List<Integer> list = new LinkedList<Integer>();
+        for (int i=1; i<33; i++) { //准备32个数
+            list.add(i);
+        }
+        List<Integer> result = new ArrayList<Integer>();
+
+
+
+    }
+
+
 }
