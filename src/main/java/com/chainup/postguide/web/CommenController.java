@@ -33,6 +33,7 @@ public  final static   String PREFIXURL = "https://dev5open.chaindown.com/fe-pla
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.putAll(map);
+        System.out.println(jsonObject.toString());
         HttpResponse response = HttpRequest.post(PREFIXURL+url).body(jsonObject.toString()).charset("utf-8")
                //.contentType("application/x-www-form-urlencoded").connectionTimeout(2000)
                 .contentType("application/json").connectionTimeout(2000)
